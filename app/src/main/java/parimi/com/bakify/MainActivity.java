@@ -1,10 +1,13 @@
 package parimi.com.bakify;
 
+import android.content.Intent;
+import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -12,13 +15,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import parimi.com.bakify.model.BakeReceipe;
-import parimi.com.bakify.utils.BakeUtils;
-import parimi.com.bakify.utils.Constants;
-import parimi.com.bakify.utils.network.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import parimi.com.bakify.adapter.BakeAdapter;
+import parimi.com.bakify.model.BakeReceipe;
+import parimi.com.bakify.utils.BakeUtils;
+import parimi.com.bakify.utils.Constants;
+import parimi.com.bakify.utils.network.HttpUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,14 +55,16 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
 
-                    BakeReceipe[] bakeReceipeArray = new BakeReceipe[response.length()];
-                    JSONArray jsonArray = new JSONArray(response);
+                    ArrayList<BakeReceipe> bakeReceipeArray = new ArrayList<>();
+                    JSONArray jsonArray = response;
                     for(int i=0; i < jsonArray.length(); i++) {
                         BakeReceipe bakeReceipe = BakeUtils.convertJsonToObject((JSONObject)jsonArray.get(i));
-                        bakeReceipeArray[i] = bakeReceipe;
+                        bakeReceipeArray.add(bakeReceipe);
                     }
-                    mAdapter = new BakeAdapter(bakeReceipeArray);
+
+                    mAdapter = createAdapter(bakeReceipeArray);
                     mRecyclerView.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -67,6 +74,25 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
+        });
+    }
+
+    private BakeAdapter createAdapter(ArrayList<BakeReceipe> results) {
+        return new BakeAdapter(results, new BakeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BakeReceipe item) {
+                Intent intent = new Intent(MainActivity.this, DetailReceipeActivity.class);
+                try {
+                    Gson gson = new Gson();
+                    String receipeJson = gson.toJson(item);
+                    intent.putExtra(getString(R.string.receipe), receipeJson);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                startActivity(intent);
+            }
+
         });
     }
 }

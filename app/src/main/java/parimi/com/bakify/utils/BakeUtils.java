@@ -3,6 +3,8 @@ package parimi.com.bakify.utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import parimi.com.bakify.model.BakeIngredients;
 import parimi.com.bakify.model.BakeReceipe;
 import parimi.com.bakify.model.BakeSteps;
@@ -19,25 +21,30 @@ public class BakeUtils {
             JSONArray steps = jsonObject.getJSONArray("steps");
             bakeReceipe.setId(Integer.parseInt(jsonObject.get("id").toString()));
             bakeReceipe.setName(jsonObject.get("name").toString());
-            BakeIngredients[] bakeIngredientsArray = new BakeIngredients[ingredients.length()];
-            BakeSteps[] bakeStepsArray = new BakeSteps[steps.length()];
+            ArrayList<BakeIngredients> bakeIngredientsArray = new ArrayList<>();
+            ArrayList<BakeSteps> bakeStepsArray = new ArrayList<>();
+
             for (int i=0; i < ingredients.length(); i++) {
                 BakeIngredients bakeIngredients = new BakeIngredients();
-                bakeIngredients.setIngredient(bakeIngredientsArray[i].getIngredient());
-                bakeIngredients.setMeasure(bakeIngredientsArray[i].getMeasure());
-                bakeIngredients.setQuantity(bakeIngredientsArray[i].getQuantity());
-                bakeIngredientsArray[i] = bakeIngredients;
+                JSONObject ingredientObj = (JSONObject) ingredients.get(i);
+                bakeIngredients.setIngredient(ingredientObj.get("ingredient").toString());
+                bakeIngredients.setMeasure(ingredientObj.get("measure").toString());
+                bakeIngredients.setQuantity(Float.parseFloat(ingredientObj.get("quantity").toString()));
+                bakeIngredientsArray.add(bakeIngredients);
             }
 
             for (int i=0; i < steps.length(); i++) {
                 BakeSteps bakeSteps = new BakeSteps();
-                bakeSteps.setId(bakeStepsArray[i].getId());
-                bakeSteps.setDescription(bakeStepsArray[i].getDescription());
-                bakeSteps.setShortDescription(bakeStepsArray[i].getShortDescription());
-                bakeSteps.setThumbnailURL(bakeStepsArray[i].getThumbnailURL());
-                bakeSteps.setVideoURL(bakeStepsArray[i].getVideoURL());
-                bakeStepsArray[i] = bakeSteps;
+                JSONObject stepsObj = (JSONObject) steps.get(i);
+                bakeSteps.setId(Integer.parseInt(stepsObj.get("id").toString()));
+                bakeSteps.setDescription(stepsObj.get("description").toString());
+                bakeSteps.setShortDescription(stepsObj.get("shortDescription").toString());
+                bakeSteps.setThumbnailURL(stepsObj.getString("thumbnailURL").toString());
+                bakeSteps.setVideoURL(stepsObj.getString("videoURL"));
+                bakeStepsArray.add(bakeSteps);
             }
+            bakeReceipe.setIngredients(bakeIngredientsArray);
+            bakeReceipe.setSteps(bakeStepsArray);
             bakeReceipe.setImage(jsonObject.getString("image"));
             bakeReceipe.setServings(Integer.parseInt(jsonObject.getString("servings")));
 

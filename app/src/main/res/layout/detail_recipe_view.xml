@@ -4,7 +4,9 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/bake_reciepe_text"
+        android:id="@+id/ingredients"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="match_parent" />
+
+
 </LinearLayout>

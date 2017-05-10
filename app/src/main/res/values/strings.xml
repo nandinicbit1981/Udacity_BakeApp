@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Bakify</string>
+    <string name="receipe">Receipe</string>
 </resources>

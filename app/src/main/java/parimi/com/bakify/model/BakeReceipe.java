@@ -1,10 +1,6 @@
 package parimi.com.bakify.model;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import static android.R.attr.data;
+import java.util.ArrayList;
 
 /**
  * Created by nandpa on 5/9/17.
@@ -13,8 +9,8 @@ import static android.R.attr.data;
 public class BakeReceipe {
     private  int id;
     private  String name;
-    private  BakeIngredients[] ingredients;
-    private  BakeSteps[] bakeSteps;
+    private  ArrayList<BakeIngredients> ingredients;
+    private  ArrayList<BakeSteps> steps;
     private int servings;
     private String image;
 
@@ -34,20 +30,20 @@ public class BakeReceipe {
         this.name = name;
     }
 
-    public BakeIngredients[] getIngredients() {
+    public ArrayList<BakeIngredients> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(BakeIngredients[] ingredients) {
+    public void setIngredients(ArrayList<BakeIngredients> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public BakeSteps[] getBakeSteps() {
-        return bakeSteps;
+    public ArrayList<BakeSteps> getSteps() {
+        return steps;
     }
 
-    public void setBakeSteps(BakeSteps[] bakeSteps) {
-        this.bakeSteps = bakeSteps;
+    public void setSteps(ArrayList<BakeSteps> steps) {
+        this.steps = steps;
     }
 
     public int getServings() {

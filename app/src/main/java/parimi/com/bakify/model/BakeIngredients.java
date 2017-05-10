@@ -5,15 +5,15 @@ package parimi.com.bakify.model;
  */
 
 public class BakeIngredients {
-    private int quantity;
+    private float quantity;
     private String measure;
     private String ingredient;
 
-    public int getQuantity() {
+    public float getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(float quantity) {
         this.quantity = quantity;
     }
 
