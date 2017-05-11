@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Bakify</string>
     <string name="receipe">Receipe</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="title_recipe_list">recipes</string>
+    <string name="title_recipe_detail">recipe Detail</string>
 </resources>

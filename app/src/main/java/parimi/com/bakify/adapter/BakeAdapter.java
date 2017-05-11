@@ -52,7 +52,7 @@ public class BakeAdapter extends RecyclerView.Adapter<BakeAdapter.ViewHolder> {
                                                    int viewType) {
         // create a new view
         View inflate = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.main_bake_view, parent, false);
+                .inflate(R.layout.activity_main_recipe_view, parent, false);
 
         ViewHolder vh = new ViewHolder(inflate);
         return vh;

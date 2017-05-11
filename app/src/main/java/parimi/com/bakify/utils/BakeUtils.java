@@ -14,7 +14,7 @@ import parimi.com.bakify.model.BakeSteps;
  */
 
 public class BakeUtils {
-    public static BakeReceipe convertJsonToObject(JSONObject jsonObject) {
+    public static BakeReceipe convertJsonToBakeReceipe(JSONObject jsonObject) {
         BakeReceipe bakeReceipe = new BakeReceipe();
         try {
             JSONArray ingredients = jsonObject.getJSONArray("ingredients");
@@ -52,6 +52,29 @@ public class BakeUtils {
             e.printStackTrace();
         }
         return bakeReceipe;
+
+    }
+
+    public static BakeSteps convertJsonToSteps(JSONObject jsonObject) {
+        BakeSteps step= new BakeSteps();
+        try {
+            String id = jsonObject.get("id").toString();
+            String shortDescription = jsonObject.get("shortDescription").toString();
+            String description = jsonObject.get("description").toString();
+            String videoUrl = jsonObject.get("videoURL").toString();
+            String thumbnailURL = jsonObject.get("thumbnailURL").toString();
+
+            step.setId(Integer.parseInt(id));
+            step.setDescription(description);
+            step.setShortDescription(shortDescription);
+            step.setVideoURL(videoUrl);
+            step.setThumbnailURL(thumbnailURL);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return step;
 
     }
 }

@@ -1,7 +1,6 @@
 package parimi.com.bakify;
 
 import android.content.Intent;
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import parimi.com.bakify.adapter.BakeAdapter;
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                     ArrayList<BakeReceipe> bakeReceipeArray = new ArrayList<>();
                     JSONArray jsonArray = response;
                     for(int i=0; i < jsonArray.length(); i++) {
-                        BakeReceipe bakeReceipe = BakeUtils.convertJsonToObject((JSONObject)jsonArray.get(i));
+                        BakeReceipe bakeReceipe = BakeUtils.convertJsonToBakeReceipe((JSONObject)jsonArray.get(i));
                         bakeReceipeArray.add(bakeReceipe);
                     }
 
@@ -81,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
         return new BakeAdapter(results, new BakeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BakeReceipe item) {
-                Intent intent = new Intent(MainActivity.this, DetailReceipeActivity.class);
+             //   Intent intent = new Intent(MainActivity.this, DetailReceipeActivity.class);
+                Intent intent = new Intent(MainActivity.this, recipeListActivity.class);
                 try {
                     Gson gson = new Gson();
                     String receipeJson = gson.toJson(item);

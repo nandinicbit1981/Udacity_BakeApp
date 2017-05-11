@@ -1,44 +1,54 @@
 package parimi.com.bakify;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ListView;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-import parimi.com.bakify.adapter.BakeAdapter;
-import parimi.com.bakify.adapter.IngredientsAdapter;
-import parimi.com.bakify.model.BakeIngredients;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import parimi.com.bakify.model.BakeReceipe;
 import parimi.com.bakify.utils.BakeUtils;
 
-import static parimi.com.bakify.R.id.ingredients;
 
 public class DetailReceipeActivity extends AppCompatActivity {
 
+    private BakeReceipe bakeRecipe;
+
+    @Bind(R.id.bake_recipe_ingredients_txt)
+    TextView ingredientsTxt;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_receipe);
-        String bakeRecipe =  getIntent().getExtras().get(getString(R.string.receipe)).toString();
+        ButterKnife.bind(this);
+        String bakeRecipeJson =  getIntent().getExtras().get(getString(R.string.receipe)).toString();
         try {
             // Construct the data source
+            JSONObject bakeRecipeJsonObj = new JSONObject(bakeRecipeJson);
+            bakeRecipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj);
+            ingredientsTxt.setText(getString(R.string.ingredients));
 
-            JSONObject bakeRecipeJson = new JSONObject(bakeRecipe);
-            BakeReceipe bakeReceipe = BakeUtils.convertJsonToObject(bakeRecipeJson);
-            ArrayList<BakeIngredients> ingredients = bakeReceipe.getIngredients();
-            // Create the adapter to convert the array to views
-            IngredientsAdapter adapter = new IngredientsAdapter(this, ingredients);
-            // Attach the adapter to a ListView
-            ListView listView = (ListView) findViewById(R.id.ingredients_listview);
-            listView.setAdapter(adapter);
         }catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @OnClick(R.id.bake_recipe_ingredients_txt)
+    public void onIngredientsClick() {
+        Gson gson = new Gson();
+        String receipeJson = gson.toJson(bakeRecipe);
+        Intent intent = new Intent(DetailReceipeActivity.this, IngredientsActivity.class);
+        intent.putExtra(getString(R.string.receipe), receipeJson);
+        startActivity(intent);
+
     }
 }
