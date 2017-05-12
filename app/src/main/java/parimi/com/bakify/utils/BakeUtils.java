@@ -4,10 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import parimi.com.bakify.model.BakeIngredients;
 import parimi.com.bakify.model.BakeReceipe;
 import parimi.com.bakify.model.BakeSteps;
+
+import static android.R.attr.description;
 
 /**
  * Created by nandpa on 5/9/17.
@@ -76,5 +79,40 @@ public class BakeUtils {
         }
         return step;
 
+    }
+
+    public static BakeIngredients convertJsonToIngredients(JSONObject jsonObject) {
+        BakeIngredients ingredients= new BakeIngredients();
+        try {
+            String quantity = jsonObject.get("quantity").toString();
+            String measure = jsonObject.get("measure").toString();
+            String ingredient = jsonObject.get("ingredient").toString();
+
+            ingredients.setQuantity(Float.parseFloat(quantity));
+            ingredients.setMeasure(measure);
+            ingredients.setIngredient(ingredient);
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ingredients;
+
+    }
+
+    public static ArrayList<BakeIngredients> convertJsonToIngredientsList(JSONArray jsonArray) {
+        ArrayList<BakeIngredients> bakeIngredientsList = new ArrayList<>();
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                BakeIngredients bakeIngredient = convertJsonToIngredients(jsonObject);
+                bakeIngredientsList.add(bakeIngredient);
+
+            }
+        }catch (Exception e) {
+
+        }
+        return  bakeIngredientsList;
     }
 }

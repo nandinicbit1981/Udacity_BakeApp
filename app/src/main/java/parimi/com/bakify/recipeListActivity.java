@@ -18,9 +18,12 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import parimi.com.bakify.model.BakeIngredients;
 import parimi.com.bakify.model.BakeReceipe;
 import parimi.com.bakify.model.BakeSteps;
 import parimi.com.bakify.utils.BakeUtils;
+
+import static android.R.attr.fragment;
 
 /**
  * An activity representing a list of recipes. This activity
@@ -38,6 +41,7 @@ public class recipeListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
     private List<BakeSteps> bakeSteps;
+    private List<BakeIngredients> bakeIngredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,8 @@ public class recipeListActivity extends AppCompatActivity {
             // Construct the data source
             JSONObject bakeRecipeJsonObj = new JSONObject(bakeRecipeJson);
             BakeReceipe bakeRecipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj);
-             bakeSteps =  bakeRecipe.getSteps();
+            bakeSteps =  bakeRecipe.getSteps();
+            bakeIngredients = bakeRecipe.getIngredients();
             setupRecyclerView((RecyclerView) recyclerView);
 
         }catch (JSONException e) {
@@ -69,16 +74,19 @@ public class recipeListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(bakeSteps));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(bakeSteps, bakeIngredients));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private List<BakeSteps> steps = null;
+        private List<BakeIngredients> ingredients = null;
 
-        public SimpleItemRecyclerViewAdapter(List<BakeSteps> items) {
-            steps = items;
+        public SimpleItemRecyclerViewAdapter(List<BakeSteps> steps, List<BakeIngredients> ingredients) {
+
+            this.steps = steps;
+            this.ingredients = ingredients;
         }
 
         @Override
@@ -89,20 +97,36 @@ public class recipeListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = steps.get(position);
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            if(position == 0) {
+                holder.mIngredients = ingredients;
+                holder.mContentView.setText(getString(R.string.ingredients));
+            } else {
+                holder.mSteps = steps.get(position - 1);
+                holder.mContentView.setText(steps.get(position - 1).getDescription());
+            }
             //holder.mIdView.setText(steps.get(position).getId());
-            holder.mContentView.setText(steps.get(position).getDescription());
+
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Gson gson = new Gson();
-                    String receipeJson = gson.toJson(holder.mItem);
+
+                    String receipeJson = gson.toJson(holder.mSteps);
+
+                    if(position == 0) {
+                        receipeJson = gson.toJson(holder.mIngredients);
+                    }
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        //arguments.putString(recipeDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-                        arguments.putString("steps", receipeJson);
+                        //arguments.putString(recipeDetailFragment.ARG_ITEM_ID, holder.mSteps.id);
+                        if(position == 0) {
+                            arguments.putString("ingredients", receipeJson);
+                        } else {
+                            arguments.putString("steps", receipeJson);
+                        }
+
                         recipeDetailFragment fragment = new recipeDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -112,22 +136,32 @@ public class recipeListActivity extends AppCompatActivity {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, recipeDetailActivity.class);
                         intent.putExtra("steps", receipeJson);
+                        if(position == 0) {
+                            intent.putExtra("ingredients", receipeJson);
+                        } else {
+                            intent.putExtra("steps", receipeJson);
+                        }
                         context.startActivity(intent);
                     }
                 }
             });
         }
 
+
         @Override
         public int getItemCount() {
-            return steps.size();
+            if(steps !=  null) {
+                return steps.size() + 1;
+            }
+            return 0;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public BakeSteps mItem;
+            public BakeSteps mSteps;
+            public List<BakeIngredients> mIngredients;
 
             public ViewHolder(View view) {
                 super(view);

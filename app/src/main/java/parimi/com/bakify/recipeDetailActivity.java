@@ -39,6 +39,7 @@ public class recipeDetailActivity extends AppCompatActivity {
             Bundle arguments = new Bundle();
             arguments.putString("steps",
                     getIntent().getStringExtra("steps"));
+            arguments.putString("ingredients", getIntent().getStringExtra("ingredients"));
 
             recipeDetailFragment fragment = new recipeDetailFragment();
             fragment.setArguments(arguments);
