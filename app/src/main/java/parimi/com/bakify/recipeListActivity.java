@@ -23,8 +23,6 @@ import parimi.com.bakify.model.BakeReceipe;
 import parimi.com.bakify.model.BakeSteps;
 import parimi.com.bakify.utils.BakeUtils;
 
-import static android.R.attr.fragment;
-
 /**
  * An activity representing a list of recipes. This activity
  * has different presentations for handset and tablet-size devices. On
@@ -103,7 +101,7 @@ public class recipeListActivity extends AppCompatActivity {
                 holder.mContentView.setText(getString(R.string.ingredients));
             } else {
                 holder.mSteps = steps.get(position - 1);
-                holder.mContentView.setText(steps.get(position - 1).getDescription());
+                holder.mContentView.setText(steps.get(position - 1).getShortDescription());
             }
             //holder.mIdView.setText(steps.get(position).getId());
 

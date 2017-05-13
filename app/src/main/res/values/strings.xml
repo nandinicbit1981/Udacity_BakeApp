@@ -4,4 +4,10 @@
     <string name="ingredients">Ingredients</string>
     <string name="title_recipe_list">recipes</string>
     <string name="title_recipe_detail">recipe Detail</string>
+    <string name="notification_text">Press play to hear the piece!</string>
+    <string name="sample_list_load_error">Error loading one or more samples!</string>
+    <string name="sample_not_found_error">Sample not found!</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="restart">Restart</string>
 </resources>

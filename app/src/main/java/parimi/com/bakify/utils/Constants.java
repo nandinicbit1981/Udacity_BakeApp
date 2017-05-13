@@ -6,5 +6,5 @@ package parimi.com.bakify.utils;
 
 public class Constants {
     public static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/";
-    public static final String BAKING_JSON = "March/58d1537b_baking/baking.json";
+    public static final String BAKING_JSON = "May/59121517_baking/baking.json";
 }

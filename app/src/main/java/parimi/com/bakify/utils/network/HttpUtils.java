@@ -16,7 +16,11 @@ public class HttpUtils {
 
     public static void getReceipes(String relativeUrl, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 
-        client.get(getAbsoluteUrl(relativeUrl), params, responseHandler);
+        try {
+            client.get(getAbsoluteUrl(relativeUrl), params, responseHandler);
+        }catch(Exception e) {
+            System.out.println("asdasd");
+        }
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
