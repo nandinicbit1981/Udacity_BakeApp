@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import parimi.com.bakify.adapter.IngredientsAdapter;
 import parimi.com.bakify.model.BakeIngredients;
 import parimi.com.bakify.model.BakeReceipe;
@@ -17,10 +19,15 @@ import parimi.com.bakify.utils.BakeUtils;
 public class IngredientsActivity extends AppCompatActivity {
 
     BakeReceipe bakeReceipe;
+
+    @Bind(R.id.ingredients_listview)
+    ListView ingredientsListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredients);
+        ButterKnife.bind(this);
 
         String bakeRecipeJson =  getIntent().getExtras().get(getString(R.string.receipe)).toString();
         try {
@@ -31,8 +38,8 @@ public class IngredientsActivity extends AppCompatActivity {
             // Create the adapter to convert the array to views
             IngredientsAdapter adapter = new IngredientsAdapter(this, ingredients);
             // Attach the adapter to a ListView
-            ListView listView = (ListView) findViewById(R.id.ingredients_listview);
-            listView.setAdapter(adapter);
+
+            ingredientsListView.setAdapter(adapter);
 
         }catch (JSONException e) {
             e.printStackTrace();

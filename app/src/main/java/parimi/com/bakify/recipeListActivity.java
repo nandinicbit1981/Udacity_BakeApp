@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -16,8 +18,11 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import parimi.com.bakify.model.BakeIngredients;
 import parimi.com.bakify.model.BakeReceipe;
 import parimi.com.bakify.model.BakeSteps;
@@ -41,14 +46,19 @@ public class recipeListActivity extends AppCompatActivity {
     private List<BakeSteps> bakeSteps;
     private List<BakeIngredients> bakeIngredients;
 
+    @Bind(R.id.recipe_list)
+    View recyclerView;
+
+    @Nullable
+    @Bind(R.id.recipe_detail_container)
+    FrameLayout recipeDetailContainer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
-
-        View recyclerView = findViewById(R.id.recipe_list);
-        assert recyclerView != null;
-
+        ButterKnife.bind(this);
         String bakeRecipeJson =  getIntent().getExtras().get(getString(R.string.receipe)).toString();
         try {
             // Construct the data source
@@ -62,7 +72,7 @@ public class recipeListActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (findViewById(R.id.recipe_detail_container) != null) {
+        if (recipeDetailContainer != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -100,7 +110,8 @@ public class recipeListActivity extends AppCompatActivity {
                 holder.mIngredients = ingredients;
                 holder.mContentView.setText(getString(R.string.ingredients));
             } else {
-                holder.mSteps = steps.get(position - 1);
+                holder.mStep = steps.get(position - 1);
+                holder.mSteps = steps;
                 holder.mContentView.setText(steps.get(position - 1).getShortDescription());
             }
             //holder.mIdView.setText(steps.get(position).getId());
@@ -111,18 +122,21 @@ public class recipeListActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Gson gson = new Gson();
 
-                    String receipeJson = gson.toJson(holder.mSteps);
+                    String stepsJson = gson.toJson(holder.mSteps);
+                    String currentJson = gson.toJson(holder.mStep);
+                    String ingredientsJson = "";
 
                     if(position == 0) {
-                        receipeJson = gson.toJson(holder.mIngredients);
+                        ingredientsJson = gson.toJson(holder.mIngredients);
                     }
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
                         //arguments.putString(recipeDetailFragment.ARG_ITEM_ID, holder.mSteps.id);
                         if(position == 0) {
-                            arguments.putString("ingredients", receipeJson);
+                            arguments.putString("ingredients", ingredientsJson);
                         } else {
-                            arguments.putString("steps", receipeJson);
+                            arguments.putString("steps", stepsJson);
+                            arguments.putString("currentStep", currentJson);
                         }
 
                         recipeDetailFragment fragment = new recipeDetailFragment();
@@ -133,17 +147,19 @@ public class recipeListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, recipeDetailActivity.class);
-                        intent.putExtra("steps", receipeJson);
+
                         if(position == 0) {
-                            intent.putExtra("ingredients", receipeJson);
+                            intent.putExtra("ingredients", ingredientsJson);
                         } else {
-                            intent.putExtra("steps", receipeJson);
+                            intent.putExtra("steps", stepsJson);
+                            intent.putExtra("currentStep", currentJson);
                         }
                         context.startActivity(intent);
                     }
                 }
             });
         }
+
 
 
         @Override
@@ -156,15 +172,14 @@ public class recipeListActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
-            public final TextView mIdView;
             public final TextView mContentView;
-            public BakeSteps mSteps;
+            public BakeSteps mStep;
+            public List<BakeSteps> mSteps;
             public List<BakeIngredients> mIngredients;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
             }
 

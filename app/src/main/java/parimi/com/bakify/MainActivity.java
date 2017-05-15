@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -17,6 +16,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 import parimi.com.bakify.adapter.BakeAdapter;
 import parimi.com.bakify.model.BakeReceipe;
@@ -26,7 +27,9 @@ import parimi.com.bakify.utils.network.HttpUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
+    @Bind(R.id.bake_recycler_view)
+    RecyclerView mRecyclerView;
+
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -35,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mRecyclerView = (RecyclerView) findViewById(R.id.bake_recycler_view);
-
+        ButterKnife.bind(this);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);

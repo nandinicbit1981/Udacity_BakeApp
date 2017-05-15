@@ -2,15 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="20dp"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="parimi.com.bakify.IngredientsActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="20dp"
+            android:text="@string/ingredients"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:paddingLeft="@dimen/standard_left_padding"
         android:paddingRight="@dimen/standard_right_padding"
         android:paddingTop="@dimen/standard_top_padding"
         android:paddingBottom="@dimen/standard_bottom_padding"
+        android:divider="#00000000"
         android:id="@+id/ingredients_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

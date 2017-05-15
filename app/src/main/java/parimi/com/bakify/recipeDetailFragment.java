@@ -1,12 +1,12 @@
 package parimi.com.bakify;
 
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -14,6 +14,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,14 +35,17 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import parimi.com.bakify.adapter.IngredientsAdapter;
-import parimi.com.bakify.dummy.DummyContent;
 import parimi.com.bakify.model.BakeIngredients;
 import parimi.com.bakify.model.BakeSteps;
 import parimi.com.bakify.utils.BakeUtils;
@@ -53,26 +57,39 @@ import parimi.com.bakify.utils.BakeUtils;
  * on handsets.
  */
 public class recipeDetailFragment extends Fragment implements ExoPlayer.EventListener{
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    public static final String ARG_ITEM_ID = "item_id";
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private DummyContent.DummyItem mItem;
+
+    @Nullable
+    @Bind(R.id.playerView)
+    SimpleExoPlayerView mPlayerView;
+
+    @Nullable
+    @Bind(R.id.ingredients_listview)
+    ListView ingredientsListView;
+
+    @Nullable
+    @Bind(R.id.recipe_detail)
+    TextView recipeDetailText;
+
+    @Bind(R.id.prev_step)
+    ImageView prevStep;
+
+    @Bind(R.id.next_step)
+    ImageView nextStep;
+
 
     private BakeSteps step;
     private ArrayList<BakeIngredients> ingredients;
+    private ArrayList<BakeSteps> bakeStepsList;
 
     private SimpleExoPlayer mExoPlayer;
-    private SimpleExoPlayerView mPlayerView;
+
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
     private static final String TAG = recipeDetailFragment.class.getSimpleName();
-    private NotificationManager mNotificationManager;
+    String stepListJson = "";
+    String stepJson = "";
+    String ingredientsJson = "";
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -82,11 +99,18 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         try {
-            String stepJson = getArguments().getString("steps");
-            String ingredientsJson = getArguments().getString("ingredients");
+             stepListJson = getArguments().getString("steps");
+             stepJson = getArguments().getString("currentStep");
+             ingredientsJson = getArguments().getString("ingredients");
 
 
             if(ingredientsJson != null) {
@@ -95,7 +119,9 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
 
             } else {
                 JSONObject stepJsonObj = new JSONObject(stepJson);
+                JSONArray stepJsonArray = new JSONArray(stepListJson);
                 step = BakeUtils.convertJsonToSteps(stepJsonObj);
+                bakeStepsList = BakeUtils.convertJsonToStepsList(stepJsonArray);
             }
 
 
@@ -107,35 +133,35 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
-        mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.playerView);
-        mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
-                (getResources(), R.drawable.question_mark));
+        View rootView;
+
         if(ingredients != null) {
             rootView = inflater.inflate(R.layout.activity_ingredients, container, false);
+            ButterKnife.bind(this, rootView);
             // Create the adapter to convert the array to views
             IngredientsAdapter adapter = new IngredientsAdapter(getContext(), ingredients);
             // Attach the adapter to a ListView
-            ListView listView = (ListView) rootView.findViewById(R.id.ingredients_listview);
-            listView.setAdapter(adapter);
+
+            ingredientsListView.setAdapter(adapter);
         } else {
+            rootView = inflater.inflate(R.layout.recipe_detail, container, false);
+
+            ButterKnife.bind(this, rootView);
 
             // Initialize the Media Session.
             initializeMediaSession();
 
-            // Show the dummy content as text in a TextView.
-            if (mItem != null) {
-                ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.details);
-            }
-
             if (step != null) {
                 initializePlayer(Uri.parse(step.getVideoURL()));
-                ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(step.getDescription());
+                recipeDetailText.setText(step.getDescription());
             }
 
         }
         return rootView;
     }
+
+
+
 
     /**
      * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks
@@ -208,7 +234,9 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
-        mMediaSession.setActive(false);
+        if(mMediaSession != null) {
+            mMediaSession.setActive(false);
+        }
     }
 
 
@@ -258,6 +286,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
             mExoPlayer.setPlayWhenReady(true);
         }
 
+
         @Override
         public void onPause() {
             mExoPlayer.setPlayWhenReady(false);
@@ -283,14 +312,50 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
         }
     }
 
+    @OnClick(R.id.prev_step)
+    public void prevStep(){
+        releasePlayer();
+        Context context = getContext();
+        Intent intent = new Intent(context, recipeDetailActivity.class);
+        intent.putExtra("steps", stepListJson);
+        int stepId = step.getId();
+        if(stepId != 0) {
+            stepId -=1;
+        }
 
+        step = bakeStepsList.get(stepId);
+        Gson gson = new Gson();
+        intent.putExtra("currentStep", gson.toJson(step));
+
+        context.startActivity(intent);
+    }
+
+    @OnClick(R.id.next_step)
+    public void nextStep(){
+        releasePlayer();
+        Context context = getContext();
+        Intent intent = new Intent(context, recipeDetailActivity.class);
+        intent.putExtra("steps", stepListJson);
+        int stepId = step.getId();
+        if(stepId < bakeStepsList.size()) {
+            stepId +=1;
+        }
+
+        step = bakeStepsList.get(stepId);
+        Gson gson = new Gson();
+        intent.putExtra("currentStep", gson.toJson(step));
+
+        context.startActivity(intent);
+    }
 
     /**
      * Release ExoPlayer.
      */
     private void releasePlayer() {
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+        if(mExoPlayer != null) {
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 }

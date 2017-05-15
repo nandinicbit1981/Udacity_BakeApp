@@ -115,4 +115,19 @@ public class BakeUtils {
         }
         return  bakeIngredientsList;
     }
+
+    public static ArrayList<BakeSteps> convertJsonToStepsList(JSONArray jsonArray) {
+        ArrayList<BakeSteps> bakeStepsList = new ArrayList<>();
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                BakeSteps step = convertJsonToSteps(jsonObject);
+                bakeStepsList.add(step);
+
+            }
+        }catch (Exception e) {
+
+        }
+        return  bakeStepsList;
+    }
 }
