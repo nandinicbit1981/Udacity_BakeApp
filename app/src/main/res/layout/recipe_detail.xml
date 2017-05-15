@@ -45,6 +45,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navigate_steps"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"

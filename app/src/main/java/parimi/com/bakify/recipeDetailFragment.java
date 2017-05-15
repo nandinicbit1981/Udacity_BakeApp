@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -77,6 +78,9 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
     @Bind(R.id.next_step)
     ImageView nextStep;
 
+    @Bind(R.id.navigate_steps)
+    LinearLayout navigteStepsLayout;
+
 
     private BakeSteps step;
     private ArrayList<BakeIngredients> ingredients;
@@ -90,7 +94,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
     String stepListJson = "";
     String stepJson = "";
     String ingredientsJson = "";
-
+    Boolean navigateSteps = false;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -111,7 +115,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
              stepListJson = getArguments().getString("steps");
              stepJson = getArguments().getString("currentStep");
              ingredientsJson = getArguments().getString("ingredients");
-
+             Boolean navigateSteps = getArguments().getBoolean("navigateSteps");
 
             if(ingredientsJson != null) {
                 JSONArray ingredientJsonArray = new JSONArray(ingredientsJson);
@@ -144,10 +148,15 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
 
             ingredientsListView.setAdapter(adapter);
         } else {
+
             rootView = inflater.inflate(R.layout.recipe_detail, container, false);
 
             ButterKnife.bind(this, rootView);
-
+            if(navigateSteps) {
+                navigteStepsLayout.setVisibility(View.VISIBLE);
+            } else {
+                navigteStepsLayout.setVisibility(View.INVISIBLE);
+            }
             // Initialize the Media Session.
             initializeMediaSession();
 

@@ -64,8 +64,18 @@ public class recipeListActivity extends AppCompatActivity {
             // Construct the data source
             JSONObject bakeRecipeJsonObj = new JSONObject(bakeRecipeJson);
             BakeReceipe bakeRecipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj);
+
             bakeSteps =  bakeRecipe.getSteps();
             bakeIngredients = bakeRecipe.getIngredients();
+
+            Gson gson = new Gson();
+            String ingredientsJson = gson.toJson(bakeIngredients);
+
+            //sending to widget
+            Intent broadCastIntent = new Intent(getApplicationContext(),BakifyWidget.class);
+            broadCastIntent.putExtra("ingredients", ingredientsJson);
+            broadCastIntent.putExtra("recipe",  bakeRecipe.getName());
+            getApplicationContext().sendBroadcast(broadCastIntent);
             setupRecyclerView((RecyclerView) recyclerView);
 
         }catch (JSONException e) {
@@ -124,11 +134,9 @@ public class recipeListActivity extends AppCompatActivity {
 
                     String stepsJson = gson.toJson(holder.mSteps);
                     String currentJson = gson.toJson(holder.mStep);
-                    String ingredientsJson = "";
+                    String ingredientsJson = gson.toJson(holder.mIngredients);
 
-                    if(position == 0) {
-                        ingredientsJson = gson.toJson(holder.mIngredients);
-                    }
+
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
                         //arguments.putString(recipeDetailFragment.ARG_ITEM_ID, holder.mSteps.id);
@@ -150,9 +158,11 @@ public class recipeListActivity extends AppCompatActivity {
 
                         if(position == 0) {
                             intent.putExtra("ingredients", ingredientsJson);
+
                         } else {
                             intent.putExtra("steps", stepsJson);
                             intent.putExtra("currentStep", currentJson);
+                            intent.putExtra("navigateSteps", mTwoPane);
                         }
                         context.startActivity(intent);
                     }

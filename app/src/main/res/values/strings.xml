@@ -11,4 +11,6 @@
     <string name="pause">Pause</string>
     <string name="restart">Restart</string>
     <string name="step">Step</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

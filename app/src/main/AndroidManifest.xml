@@ -21,13 +21,13 @@
         <activity android:name=".DetailReceipeActivity" />
         <activity android:name=".IngredientsActivity" />
         <activity
-            android:configChanges="orientation"
             android:name=".recipeListActivity"
-            android:label="@string/title_recipe_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
             android:configChanges="orientation"
+            android:label="@string/title_recipe_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".recipeDetailActivity"
+            android:configChanges="orientation"
             android:label="@string/title_recipe_detail"
             android:parentActivityName=".recipeListActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -35,6 +35,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="parimi.com.bakify.recipeListActivity" />
         </activity>
+        <service android:name="parimi.com.bakify.service.MyWidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+        <receiver android:name=".BakifyWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/bakify_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
