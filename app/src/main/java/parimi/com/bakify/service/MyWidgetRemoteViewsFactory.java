@@ -41,12 +41,7 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
 
     @Override
     public void onDataSetChanged() {
-
-
-
         final long identityToken = Binder.clearCallingIdentity();
-
-
         Binder.restoreCallingIdentity(identityToken);
 
     }

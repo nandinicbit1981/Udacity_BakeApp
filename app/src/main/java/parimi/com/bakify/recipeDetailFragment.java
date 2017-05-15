@@ -72,12 +72,15 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
     @Bind(R.id.recipe_detail)
     TextView recipeDetailText;
 
+    @Nullable
     @Bind(R.id.prev_step)
     ImageView prevStep;
 
+    @Nullable
     @Bind(R.id.next_step)
     ImageView nextStep;
 
+    @Nullable
     @Bind(R.id.navigate_steps)
     LinearLayout navigteStepsLayout;
 
@@ -321,6 +324,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
         }
     }
 
+    @Nullable
     @OnClick(R.id.prev_step)
     public void prevStep(){
         releasePlayer();
@@ -339,6 +343,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
         context.startActivity(intent);
     }
 
+    @Nullable
     @OnClick(R.id.next_step)
     public void nextStep(){
         releasePlayer();
