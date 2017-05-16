@@ -27,7 +27,13 @@ public class BakifyWidget extends AppWidgetProvider {
     ArrayList<BakeIngredients> ingredientsList;
     String recipe;
 
-    //This method is used to get ingredients for the selected menu item and display in the widget
+    /**
+     * This method updates the widget with ingredients list.
+     *
+     * @param context
+     * @param appWidgetManager
+     * @param appWidgetId
+     */
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                          int appWidgetId) {
 
@@ -47,6 +53,13 @@ public class BakifyWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
+    /**
+     * This method is invoked by OnRecieve method, this method updates the widget with required information.
+     *
+     * @param context
+     * @param appWidgetManager
+     * @param appWidgetIds
+     */
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
@@ -58,14 +71,21 @@ public class BakifyWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+
     }
 
+    /**
+     * This method is invoked when app broadcasts any change in the selected recipe.
+     * This method extracts the ingredients list and invokes onUpdate method.
+     *
+     * @param context
+     * @param intent
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         try {

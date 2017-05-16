@@ -2,6 +2,7 @@ package parimi.com.bakify;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
 
 import org.json.JSONException;
@@ -16,9 +17,12 @@ import parimi.com.bakify.model.BakeIngredients;
 import parimi.com.bakify.model.BakeReceipe;
 import parimi.com.bakify.utils.BakeUtils;
 
+/**
+ * This activity populates ingredients on the ingredients details view.
+ */
 public class IngredientsActivity extends AppCompatActivity {
 
-    BakeReceipe bakeReceipe;
+    private static final String TAG = IngredientsActivity.class.getSimpleName();
 
     @Bind(R.id.ingredients_listview)
     ListView ingredientsListView;
@@ -29,20 +33,20 @@ public class IngredientsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ingredients);
         ButterKnife.bind(this);
 
-        String bakeRecipeJson =  getIntent().getExtras().get(getString(R.string.receipe)).toString();
         try {
-            // Construct the data source
+            String bakeRecipeJson = getIntent().getExtras().get(getString(R.string.receipe)).toString();
             JSONObject bakeRecipeJsonObj = new JSONObject(bakeRecipeJson);
-            bakeReceipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj, getBaseContext());
+            BakeReceipe bakeReceipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj, getBaseContext());
             ArrayList<BakeIngredients> ingredients = bakeReceipe.getIngredients();
+
             // Create the adapter to convert the array to views
             IngredientsAdapter adapter = new IngredientsAdapter(this, ingredients);
-            // Attach the adapter to a ListView
 
+            // Attach the adapter to a ListView
             ingredientsListView.setAdapter(adapter);
 
-        }catch (JSONException e) {
-            e.printStackTrace();
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
         }
 
     }

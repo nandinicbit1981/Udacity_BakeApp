@@ -215,7 +215,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
      * @param mediaUri The URI of the sample to play.
      */
     private void initializePlayer(Uri mediaUri) {
-        if (mExoPlayer == null) {
+        if (mExoPlayer == null && mediaUri != null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
