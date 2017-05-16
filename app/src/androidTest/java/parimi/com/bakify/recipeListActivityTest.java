@@ -1,5 +1,6 @@
 package parimi.com.bakify;
 
+import android.content.res.Resources;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -34,7 +35,7 @@ public class recipeListActivityTest {
         onView(withId(R.id.bake_recycler_view))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         // Type text and then press the button.
-        onView(allOf(withId(R.id.content), withText("Ingredients"))).perform(click());
+        onView(allOf(withId(R.id.content), withText(Resources.getSystem().getString(R.string.ingredients)))).perform(click());
         onView(withId(R.id.ingredients_header)).check(matches(isDisplayed()));
 
 

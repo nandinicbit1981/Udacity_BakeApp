@@ -15,12 +15,7 @@ public class HttpUtils {
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void getReceipes(String relativeUrl, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-
-        try {
-            client.get(getAbsoluteUrl(relativeUrl), params, responseHandler);
-        }catch(Exception e) {
-            System.out.println("asdasd");
-        }
+        client.get(getAbsoluteUrl(relativeUrl), params, responseHandler);
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {

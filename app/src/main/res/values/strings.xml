@@ -13,4 +13,24 @@
     <string name="step">Step</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+    <!-- params specific to json conversion START -->
+    <string name="ingredients_param">ingredients</string>
+    <string name="recipe_param">recipe</string>
+    <string name="steps_param">steps</string>
+    <string name="id_param">id</string>
+    <string name="name_param">name</string>
+    <string name="ingredient_param">ingredient</string>
+    <string name="measure_param">measure</string>
+    <string name="quantity_param">quantity</string>
+    <string name="description_param">description</string>
+    <string name="short_description_param">shortDescription</string>
+    <string name="thumbnail_url">thumbnailURL</string>
+    <string name="video_url">videoURL</string>
+    <string name="image">image</string>
+    <string name="servings">servings</string>
+    <string name="current_step">currentStep</string>
+    <string name="navigate_steps">navigateSteps</string>
+    <!-- params specific to json conversion END -->
+
 </resources>

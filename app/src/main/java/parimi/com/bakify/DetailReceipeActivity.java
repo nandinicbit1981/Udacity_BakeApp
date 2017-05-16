@@ -34,7 +34,7 @@ public class DetailReceipeActivity extends AppCompatActivity {
         try {
             // Construct the data source
             JSONObject bakeRecipeJsonObj = new JSONObject(bakeRecipeJson);
-            bakeRecipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj);
+            bakeRecipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj, getBaseContext());
             ingredientsTxt.setText(getString(R.string.ingredients));
 
         }catch (JSONException e) {

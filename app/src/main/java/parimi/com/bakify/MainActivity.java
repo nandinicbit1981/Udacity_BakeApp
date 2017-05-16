@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -26,6 +27,8 @@ import parimi.com.bakify.utils.Constants;
 import parimi.com.bakify.utils.network.HttpUtils;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Bind(R.id.bake_recycler_view)
     RecyclerView mRecyclerView;
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                         ArrayList<BakeReceipe> bakeReceipeArray = new ArrayList<>();
                         JSONArray jsonArray = response;
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            BakeReceipe bakeReceipe = BakeUtils.convertJsonToBakeReceipe((JSONObject) jsonArray.get(i));
+                            BakeReceipe bakeReceipe = BakeUtils.convertJsonToBakeReceipe((JSONObject) jsonArray.get(i), getBaseContext());
                             bakeReceipeArray.add(bakeReceipe);
                         }
 
@@ -78,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }catch(Exception e) {
-            System.out.println("Hello");
+           Log.e(TAG, e.getMessage());
         }
     }
 
@@ -86,15 +89,15 @@ public class MainActivity extends AppCompatActivity {
         return new BakeAdapter(results, new BakeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BakeReceipe item) {
-             //   Intent intent = new Intent(MainActivity.this, DetailReceipeActivity.class);
+
                 Intent intent = new Intent(MainActivity.this, recipeListActivity.class);
                 try {
                     Gson gson = new Gson();
                     String receipeJson = gson.toJson(item);
-                    intent.putExtra(getString(R.string.receipe), receipeJson);
+                    intent.putExtra(getString(R.string.recipe_param), receipeJson);
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
                 }
                 startActivity(intent);
             }

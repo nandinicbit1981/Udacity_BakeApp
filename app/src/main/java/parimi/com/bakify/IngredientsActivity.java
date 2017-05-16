@@ -33,7 +33,7 @@ public class IngredientsActivity extends AppCompatActivity {
         try {
             // Construct the data source
             JSONObject bakeRecipeJsonObj = new JSONObject(bakeRecipeJson);
-            bakeReceipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj);
+            bakeReceipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj, getBaseContext());
             ArrayList<BakeIngredients> ingredients = bakeReceipe.getIngredients();
             // Create the adapter to convert the array to views
             IngredientsAdapter adapter = new IngredientsAdapter(this, ingredients);

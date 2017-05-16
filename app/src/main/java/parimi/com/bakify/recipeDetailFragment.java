@@ -82,7 +82,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
 
     @Nullable
     @Bind(R.id.navigate_steps)
-    LinearLayout navigteStepsLayout;
+    LinearLayout navigateStepsLayout;
 
 
     private BakeSteps step;
@@ -115,20 +115,20 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
         super.onCreate(savedInstanceState);
 
         try {
-             stepListJson = getArguments().getString("steps");
-             stepJson = getArguments().getString("currentStep");
-             ingredientsJson = getArguments().getString("ingredients");
-             Boolean navigateSteps = getArguments().getBoolean("navigateSteps");
+             stepListJson = getArguments().getString(getString(R.string.steps_param));
+             stepJson = getArguments().getString(getString(R.string.current_step));
+             ingredientsJson = getArguments().getString(getString(R.string.ingredients_param));
+             navigateSteps = getArguments().getBoolean(getString(R.string.navigate_steps));
 
             if(ingredientsJson != null) {
                 JSONArray ingredientJsonArray = new JSONArray(ingredientsJson);
-                ingredients = BakeUtils.convertJsonToIngredientsList(ingredientJsonArray);
+                ingredients = BakeUtils.convertJsonToIngredientsList(ingredientJsonArray, getContext());
 
             } else {
                 JSONObject stepJsonObj = new JSONObject(stepJson);
                 JSONArray stepJsonArray = new JSONArray(stepListJson);
-                step = BakeUtils.convertJsonToSteps(stepJsonObj);
-                bakeStepsList = BakeUtils.convertJsonToStepsList(stepJsonArray);
+                step = BakeUtils.convertJsonToSteps(stepJsonObj, getContext());
+                bakeStepsList = BakeUtils.convertJsonToStepsList(stepJsonArray, getContext());
             }
 
 
@@ -156,9 +156,9 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
 
             ButterKnife.bind(this, rootView);
             if(navigateSteps) {
-                navigteStepsLayout.setVisibility(View.INVISIBLE);
+                navigateStepsLayout.setVisibility(View.INVISIBLE);
             } else {
-                navigteStepsLayout.setVisibility(View.VISIBLE);
+                navigateStepsLayout.setVisibility(View.VISIBLE);
             }
             // Initialize the Media Session.
             initializeMediaSession();
@@ -171,8 +171,6 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
         }
         return rootView;
     }
-
-
 
 
     /**
@@ -212,8 +210,6 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
     }
 
 
-
-
     /**
      * Initialize ExoPlayer.
      * @param mediaUri The URI of the sample to play.
@@ -230,7 +226,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
             mExoPlayer.addListener(this);
 
             // Prepare the MediaSource.
-            String userAgent = Util.getUserAgent(getContext(), "Bakify");
+            String userAgent = Util.getUserAgent(getContext(), getString(R.string.app_name));
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
@@ -330,7 +326,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
         releasePlayer();
         Context context = getContext();
         Intent intent = new Intent(context, recipeDetailActivity.class);
-        intent.putExtra("steps", stepListJson);
+        intent.putExtra(getString(R.string.steps_param), stepListJson);
         int stepId = step.getId();
         if(stepId != 0) {
             stepId -=1;
@@ -338,7 +334,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
 
         step = bakeStepsList.get(stepId);
         Gson gson = new Gson();
-        intent.putExtra("currentStep", gson.toJson(step));
+        intent.putExtra(getString(R.string.current_step), gson.toJson(step));
 
         context.startActivity(intent);
     }
@@ -349,7 +345,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
         releasePlayer();
         Context context = getContext();
         Intent intent = new Intent(context, recipeDetailActivity.class);
-        intent.putExtra("steps", stepListJson);
+        intent.putExtra(getString(R.string.steps_param), stepListJson);
         int stepId = step.getId();
         if(stepId < bakeStepsList.size()) {
             stepId +=1;
@@ -357,7 +353,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
 
         step = bakeStepsList.get(stepId);
         Gson gson = new Gson();
-        intent.putExtra("currentStep", gson.toJson(step));
+        intent.putExtra(getString(R.string.current_step), gson.toJson(step));
 
         context.startActivity(intent);
     }

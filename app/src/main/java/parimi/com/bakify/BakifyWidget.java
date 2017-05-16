@@ -38,7 +38,7 @@ public class BakifyWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, MyWidgetRemoteViewsService.class);
 
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        intent.putExtra("ingredients", (new Gson().toJson(ingredientsList)).toString());
+        intent.putExtra(context.getString(R.string.ingredients_param), (new Gson().toJson(ingredientsList)).toString());
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         views.setRemoteAdapter(R.id.appwidget_ingredients, intent);
         views.setTextViewText(R.id.appwidget_recipe, recipe);
@@ -69,11 +69,11 @@ public class BakifyWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         try {
             Bundle extras = intent.getExtras();
-            String ingredientsJson = extras.getString("ingredients");
-            recipe = extras.getString("recipe");
+            String ingredientsJson = extras.getString(context.getString(R.string.ingredients_param));
+            recipe = extras.getString(context.getString(R.string.recipe_param));
             if (ingredientsJson != null) {
                 JSONArray ingredientJsonArray = new JSONArray(ingredientsJson);
-                ingredientsList = BakeUtils.convertJsonToIngredientsList(ingredientJsonArray);
+                ingredientsList = BakeUtils.convertJsonToIngredientsList(ingredientJsonArray, context);
 
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                 ComponentName thisAppWidget = new ComponentName(context.getPackageName(), BakifyWidget.class.getName());

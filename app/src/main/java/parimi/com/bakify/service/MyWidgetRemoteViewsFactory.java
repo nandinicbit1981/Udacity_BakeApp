@@ -28,8 +28,8 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
     public MyWidgetRemoteViewsFactory(Context applicationContext, Intent intent) {
         mContext = applicationContext;
         try {
-            String ingredients = intent.getExtras().get("ingredients").toString();
-            this.ingredients = BakeUtils.convertJsonToIngredientsList(new JSONArray(ingredients));
+            String ingredients = intent.getExtras().get(applicationContext.getString(R.string.ingredients_param)).toString();
+            this.ingredients = BakeUtils.convertJsonToIngredientsList(new JSONArray(ingredients), applicationContext);
         } catch (JSONException e) {
             e.printStackTrace();
         }

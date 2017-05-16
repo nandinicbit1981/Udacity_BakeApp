@@ -59,11 +59,11 @@ public class recipeListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
         ButterKnife.bind(this);
-        String bakeRecipeJson =  getIntent().getExtras().get(getString(R.string.receipe)).toString();
+        String bakeRecipeJson =  getIntent().getExtras().get(getString(R.string.recipe_param)).toString();
         try {
             // Construct the data source
             JSONObject bakeRecipeJsonObj = new JSONObject(bakeRecipeJson);
-            BakeReceipe bakeRecipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj);
+            BakeReceipe bakeRecipe = BakeUtils.convertJsonToBakeReceipe(bakeRecipeJsonObj, getBaseContext());
 
             bakeSteps =  bakeRecipe.getSteps();
             bakeIngredients = bakeRecipe.getIngredients();
@@ -73,8 +73,8 @@ public class recipeListActivity extends AppCompatActivity {
 
             //sending to widget
             Intent broadCastIntent = new Intent(getApplicationContext(),BakifyWidget.class);
-            broadCastIntent.putExtra("ingredients", ingredientsJson);
-            broadCastIntent.putExtra("recipe",  bakeRecipe.getName());
+            broadCastIntent.putExtra(getString(R.string.ingredients_param), ingredientsJson);
+            broadCastIntent.putExtra(getString(R.string.recipe_param),  bakeRecipe.getName());
             getApplicationContext().sendBroadcast(broadCastIntent);
             setupRecyclerView((RecyclerView) recyclerView);
 
@@ -139,12 +139,12 @@ public class recipeListActivity extends AppCompatActivity {
 
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        //arguments.putString(recipeDetailFragment.ARG_ITEM_ID, holder.mSteps.id);
+
                         if(position == 0) {
-                            arguments.putString("ingredients", ingredientsJson);
+                            arguments.putString(getString(R.string.ingredients_param), ingredientsJson);
                         } else {
-                            arguments.putString("steps", stepsJson);
-                            arguments.putString("currentStep", currentJson);
+                            arguments.putString(getString(R.string.steps_param), stepsJson);
+                            arguments.putString(getString(R.string.current_step), currentJson);
                         }
 
                         recipeDetailFragment fragment = new recipeDetailFragment();
@@ -157,12 +157,12 @@ public class recipeListActivity extends AppCompatActivity {
                         Intent intent = new Intent(context, recipeDetailActivity.class);
 
                         if(position == 0) {
-                            intent.putExtra("ingredients", ingredientsJson);
+                            intent.putExtra(getString(R.string.ingredients_param), ingredientsJson);
 
                         } else {
-                            intent.putExtra("steps", stepsJson);
-                            intent.putExtra("currentStep", currentJson);
-                            intent.putExtra("navigateSteps", mTwoPane);
+                            intent.putExtra(getString(R.string.steps_param), stepsJson);
+                            intent.putExtra(getString(R.string.current_step), currentJson);
+                            intent.putExtra(getString(R.string.navigate_steps), mTwoPane);
                         }
                         context.startActivity(intent);
                     }
