@@ -3,7 +3,7 @@ package parimi.com.bakify.model;
 import java.util.ArrayList;
 
 /**
- * Created by nandpa on 5/9/17.
+ * This is a POJO for recipes
  */
 
 public class BakeReceipe {

@@ -13,7 +13,7 @@ import parimi.com.bakify.model.BakeReceipe;
 import parimi.com.bakify.model.BakeSteps;
 
 /**
- * Created by nandpa on 5/9/17.
+ * This is a Util class for conversion of json into recipe objects (recipe, step, ingredient)
  */
 
 public class BakeUtils {

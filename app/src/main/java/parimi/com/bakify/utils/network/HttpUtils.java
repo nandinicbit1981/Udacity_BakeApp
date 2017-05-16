@@ -7,13 +7,13 @@ import com.loopj.android.http.RequestParams;
 import static parimi.com.bakify.utils.Constants.BASE_URL;
 
 /**
- * Created by nandpa on 5/9/17.
+ * This is the wrapper class for handling network calls.
  */
-
 
 public class HttpUtils {
     private static AsyncHttpClient client = new AsyncHttpClient();
 
+    // this method is used to get recipes from the url provided.
     public static void getReceipes(String relativeUrl, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(relativeUrl), params, responseHandler);
     }

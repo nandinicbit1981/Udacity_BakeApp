@@ -1,7 +1,7 @@
 package parimi.com.bakify.model;
 
 /**
- * Created by nandpa on 5/9/17.
+ * This is a POJO for steps which will be used in the preparation of recipes
  */
 
 public class BakeSteps {

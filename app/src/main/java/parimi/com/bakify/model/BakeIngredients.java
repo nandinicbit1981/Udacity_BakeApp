@@ -1,7 +1,7 @@
 package parimi.com.bakify.model;
 
 /**
- * Created by nandpa on 5/9/17.
+ *  This is a POJO for ingredients for the recipes
  */
 
 public class BakeIngredients {

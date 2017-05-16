@@ -16,7 +16,9 @@ import butterknife.OnClick;
 import parimi.com.bakify.model.BakeReceipe;
 import parimi.com.bakify.utils.BakeUtils;
 
-
+/**
+ * This activity is mainly used for populating details ingredients
+ */
 public class DetailReceipeActivity extends AppCompatActivity {
 
     private BakeReceipe bakeRecipe;

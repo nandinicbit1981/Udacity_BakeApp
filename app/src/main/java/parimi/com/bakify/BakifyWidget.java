@@ -27,8 +27,9 @@ public class BakifyWidget extends AppWidgetProvider {
     ArrayList<BakeIngredients> ingredientsList;
     String recipe;
 
+    //This method is used to get ingredients for the selected menu item and display in the widget
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+                         int appWidgetId) {
 
         CharSequence widgetText = context.getString(R.string.app_name);
         // Construct the RemoteViews object

@@ -18,7 +18,7 @@ import parimi.com.bakify.model.BakeIngredients;
 import parimi.com.bakify.utils.BakeUtils;
 
 /**
- * Created by nandpa on 5/15/17.
+ * This class is used to populate widget with ingredients for the selected recipe
  */
 
 public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {

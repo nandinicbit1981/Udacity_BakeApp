@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.widget.RemoteViewsService;
 
 /**
- * Created by nandpa on 5/15/17.
+ * This service is used for communication between app and widget
  */
 
 public class MyWidgetRemoteViewsService extends RemoteViewsService {

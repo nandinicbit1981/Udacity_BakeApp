@@ -12,22 +12,32 @@ import java.util.List;
 import parimi.com.bakify.R;
 import parimi.com.bakify.model.BakeReceipe;
 
+
+/**
+ * This adapter is used to populate the recipes on main activity.
+ */
 public class BakeAdapter extends RecyclerView.Adapter<BakeAdapter.ViewHolder> {
     private List<BakeReceipe> mDataset;
     private final OnItemClickListener listener;
+
     public interface OnItemClickListener {
         void onItemClick(BakeReceipe item);
     }
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+
+    /**
+     * Provide a reference to the views for each data item
+     * Complex data items may need more than one view per item, and
+     * you provide access to all the views for a data item in a view holder
+     **/
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
+
         public ViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.bake_reciepe_text);
         }
+
         public void bind(final BakeReceipe item, final OnItemClickListener listener) {
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -40,7 +50,9 @@ public class BakeAdapter extends RecyclerView.Adapter<BakeAdapter.ViewHolder> {
 
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+    /**
+     * constructor to populate the appropriate dataset and listener
+     **/
     public BakeAdapter(List<BakeReceipe> myDataset, OnItemClickListener listener) {
         this.mDataset = myDataset;
         this.listener = listener;
@@ -49,7 +61,7 @@ public class BakeAdapter extends RecyclerView.Adapter<BakeAdapter.ViewHolder> {
     // Create new views (invoked by the layout manager)
     @Override
     public BakeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+                                                     int viewType) {
         // create a new view
         View inflate = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_main_recipe_view, parent, false);
