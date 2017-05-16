@@ -28,7 +28,8 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
     public MyWidgetRemoteViewsFactory(Context applicationContext, Intent intent) {
         mContext = applicationContext;
         try {
-            ingredients = BakeUtils.convertJsonToIngredientsList(new JSONArray(intent.getExtras().get("ingredients")));
+            String ingredients = intent.getExtras().get("ingredients").toString();
+            this.ingredients = BakeUtils.convertJsonToIngredientsList(new JSONArray(ingredients));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -53,14 +54,16 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
 
     @Override
     public int getCount() {
-       return ingredients.size();
+        if(ingredients != null ) {
+            return ingredients.size();
+        }
+        return 0;
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
 
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.ingredients_detail_view);
-
         rv.setTextViewText(R.id.ingredients_name_txt_view, ingredients.get(position).getIngredient());
         rv.setTextViewText(R.id.ingredients_measurements_txt_view, ingredients.get(position).getQuantity() + " " +ingredients.get(position).getMeasure());
 

@@ -38,7 +38,7 @@ public class BakifyWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, MyWidgetRemoteViewsService.class);
 
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        intent.putExtra("ingredients", new Gson().toJson(ingredientsList));
+        intent.putExtra("ingredients", (new Gson().toJson(ingredientsList)).toString());
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         views.setRemoteAdapter(R.id.appwidget_ingredients, intent);
         views.setTextViewText(R.id.appwidget_recipe, recipe);

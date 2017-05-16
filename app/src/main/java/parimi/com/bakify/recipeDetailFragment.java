@@ -156,9 +156,9 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
 
             ButterKnife.bind(this, rootView);
             if(navigateSteps) {
-                navigteStepsLayout.setVisibility(View.VISIBLE);
-            } else {
                 navigteStepsLayout.setVisibility(View.INVISIBLE);
+            } else {
+                navigteStepsLayout.setVisibility(View.VISIBLE);
             }
             // Initialize the Media Session.
             initializeMediaSession();
