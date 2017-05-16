@@ -145,6 +145,7 @@ public class recipeListActivity extends AppCompatActivity {
                         } else {
                             arguments.putString(getString(R.string.steps_param), stepsJson);
                             arguments.putString(getString(R.string.current_step), currentJson);
+                            arguments.putBoolean(getString(R.string.navigate_steps), mTwoPane);
                         }
 
                         recipeDetailFragment fragment = new recipeDetailFragment();

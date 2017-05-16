@@ -25,6 +25,7 @@ public class recipeDetailActivity extends AppCompatActivity {
             arguments.putString(getString(R.string.steps_param), getIntent().getStringExtra(getString(R.string.steps_param)));
             arguments.putString(getString(R.string.current_step), getIntent().getStringExtra(getString(R.string.current_step)));
             arguments.putString(getString(R.string.ingredients_param), getIntent().getStringExtra(getString(R.string.ingredients_param)));
+            arguments.putString(getString(R.string.navigate_steps), getIntent().getStringExtra(getString(R.string.navigate_steps)));
 
             recipeDetailFragment fragment = new recipeDetailFragment();
             fragment.setArguments(arguments);
