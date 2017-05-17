@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:padding="16dp"
                 android:textIsSelectable="true"
-                tools:context="parimi.com.bakify.recipeDetailFragment" />
+                tools:context="parimi.com.bakify.RecipeDetailFragment" />
 
         </LinearLayout>
 

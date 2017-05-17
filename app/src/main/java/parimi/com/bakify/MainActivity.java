@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(BakeReceipe item) {
 
-                Intent intent = new Intent(MainActivity.this, recipeListActivity.class);
+                Intent intent = new Intent(MainActivity.this, RecipeListActivity.class);
                 try {
                     Gson gson = new Gson();
                     String receipeJson = gson.toJson(item);

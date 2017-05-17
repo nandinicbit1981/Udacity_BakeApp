@@ -9,9 +9,9 @@ import android.view.MenuItem;
  * An activity representing a single recipe detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link recipeListActivity}.
+ * in a {@link RecipeListActivity}.
  */
-public class recipeDetailActivity extends AppCompatActivity {
+public class RecipeDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class recipeDetailActivity extends AppCompatActivity {
             arguments.putString(getString(R.string.ingredients_param), getIntent().getStringExtra(getString(R.string.ingredients_param)));
             arguments.putString(getString(R.string.navigate_steps), getIntent().getStringExtra(getString(R.string.navigate_steps)));
 
-            recipeDetailFragment fragment = new recipeDetailFragment();
+            RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
@@ -40,7 +40,7 @@ public class recipeDetailActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
 
-            navigateUpTo(new Intent(this, recipeListActivity.class));
+            navigateUpTo(new Intent(this, RecipeListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

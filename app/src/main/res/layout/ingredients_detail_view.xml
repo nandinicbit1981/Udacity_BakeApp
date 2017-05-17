@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ingredients_name_txt_view"
-        android:textSize="15dp"
+        android:textSize="@dimen/text_size"
         android:textStyle="bold"
         android:paddingRight="10dp"
         />
@@ -16,12 +16,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dp"
-        android:textSize="15dp"
+        android:textSize="@dimen/text_size"
         android:text="-" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="@dimen/text_size"
         android:id="@+id/ingredients_measurements_txt_view"
         />
 </LinearLayout>

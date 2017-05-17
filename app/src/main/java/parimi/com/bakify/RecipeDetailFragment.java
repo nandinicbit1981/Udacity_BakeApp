@@ -53,11 +53,11 @@ import parimi.com.bakify.utils.BakeUtils;
 
 /**
  * A fragment representing a single recipe detail screen.
- * This fragment is either contained in a {@link recipeListActivity}
- * in two-pane mode (on tablets) or a {@link recipeDetailActivity}
+ * This fragment is either contained in a {@link RecipeListActivity}
+ * in two-pane mode (on tablets) or a {@link RecipeDetailActivity}
  * on handsets.
  */
-public class recipeDetailFragment extends Fragment implements ExoPlayer.EventListener{
+public class RecipeDetailFragment extends Fragment implements ExoPlayer.EventListener{
 
 
     @Nullable
@@ -93,7 +93,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
 
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
-    private static final String TAG = recipeDetailFragment.class.getSimpleName();
+    private static final String TAG = RecipeDetailFragment.class.getSimpleName();
     String stepListJson = "";
     String stepJson = "";
     String ingredientsJson = "";
@@ -102,7 +102,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public recipeDetailFragment() {
+    public RecipeDetailFragment() {
     }
 
     @Override
@@ -325,7 +325,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
     public void prevStep(){
         releasePlayer();
         Context context = getContext();
-        Intent intent = new Intent(context, recipeDetailActivity.class);
+        Intent intent = new Intent(context, RecipeDetailActivity.class);
         intent.putExtra(getString(R.string.steps_param), stepListJson);
         int stepId = step.getId();
         if(stepId != 0) {
@@ -344,7 +344,7 @@ public class recipeDetailFragment extends Fragment implements ExoPlayer.EventLis
     public void nextStep(){
         releasePlayer();
         Context context = getContext();
-        Intent intent = new Intent(context, recipeDetailActivity.class);
+        Intent intent = new Intent(context, RecipeDetailActivity.class);
         intent.putExtra(getString(R.string.steps_param), stepListJson);
         int stepId = step.getId();
         if(stepId < bakeStepsList.size()) {
